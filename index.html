@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flipkart Mega Shopping Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f1f3f6;color:#222}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* NAVBAR */
+.navbar{
+background:#2874f0;color:white;padding:13px 4%;
+display:flex;align-items:center;justify-content:space-between;
+gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:1000
+}
+.logo{font-size:30px;font-weight:bold;font-style:italic}
+.logo span{color:yellow}
+.search{display:flex;background:white;width:38%;border-radius:5px;overflow:hidden}
+.search input{width:100%;padding:13px;border:0;outline:0;font-size:15px}
+.search button{border:0;background:white;color:#2874f0;padding:10px 18px;font-size:20px}
+.nav-item{font-weight:bold;cursor:pointer}
+.nav-item:hover{color:yellow}
+.login{background:white;color:#2874f0;border:0;padding:10px 25px;font-weight:bold}
+
+/* CATEGORY */
+.categories{
+display:flex;justify-content:space-around;gap:15px;
+background:white;padding:18px 8px;flex-wrap:wrap;
+box-shadow:0 2px 5px #ddd
+}
+.cat{text-align:center;cursor:pointer;font-size:14px;font-weight:bold}
+.cat img{width:65px;height:65px;object-fit:contain;display:block;margin:auto auto 8px}
+.cat:hover{color:#2874f0}
+
+/* CAROUSEL */
+.hero{height:370px;margin:12px 1%;position:relative;overflow:hidden;background:#ddd;border-radius:5px}
+.slide{display:none;width:100%;height:100%;position:relative}
+.slide.active{display:block}
+.slide img{width:100%;height:100%;object-fit:cover}
+.hero-text{
+position:absolute;top:50%;left:7%;transform:translateY(-50%);
+background:rgba(255,255,255,.91);padding:25px;border-radius:8px;max-width:350px
+}
+.hero-text h1{font-size:34px;color:#172337;margin-bottom:12px}
+.hero-text p{margin-bottom:15px}
+.btn{background:#2874f0;color:white;border:0;padding:12px 22px;border-radius:4px;font-weight:bold;display:inline-block}
+.arrow{position:absolute;top:42%;padding:17px;background:white;border:0;font-size:25px}
+.prev{left:0}.next{right:0}
+.dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dot{width:22px;height:8px;border:0;border-radius:10px;background:white}
+.dot.active{background:#2874f0}
+
+/* OFFER */
+.offer-strip{
+background:white;margin:15px 1%;padding:22px;
+display:flex;justify-content:space-around;align-items:center;
+flex-wrap:wrap;gap:15px;text-align:center;border-radius:5px
+}
+.offer-strip h2{color:#2874f0}
+
+/* AD BANNER */
+.ad-banner{
+margin:18px 1%;padding:35px 15px;text-align:center;
+background:linear-gradient(100deg,#512da8,#2874f0);
+color:white;border-radius:6px
+}
+.ad-banner h1{font-size:32px;margin-bottom:10px}
+.ad-banner p{margin:10px}
+
+/* SECTION */
+.section{background:white;margin:18px 1%;padding:20px;border-radius:5px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px}
+.heading h2{font-size:23px}
+.heading button{background:#2874f0;color:white;padding:10px 18px;border:0}
+
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{border:1px solid #eee;padding:12px;text-align:center;position:relative;transition:.3s;border-radius:5px;background:white}
+.card:hover{box-shadow:0 4px 15px #ccc;transform:translateY(-4px)}
+.card img{width:100%;height:175px;object-fit:contain;cursor:pointer}
+.card h3{font-size:14px;margin:10px 0;cursor:pointer;min-height:32px}
+.card p{font-size:12px;color:#777}
+.price{font-weight:bold;font-size:17px}
+.old{color:#888;text-decoration:line-through;font-size:12px;margin-left:5px}
+.discount{color:green;font-size:13px;margin:8px}
+.actions{display:flex;gap:5px}
+.cart-btn{background:#ff9f00;color:white;border:0;padding:10px 4px;flex:1;font-weight:bold}
+.heart{border:0;background:#f3f3f3;padding:7px 10px;font-size:19px}
+.heart.active{color:red;background:#ffe4e4}
+.view-btn{background:#2874f0;color:white;border:0;padding:9px;width:100%;margin-top:7px}
+
+/* SPONSOR */
+.sponsor{margin:18px 1%;background:white;padding:20px}
+.sponsor-slider{height:300px;position:relative;overflow:hidden}
+.sponsor-slide{display:none;height:100%;position:relative}
+.sponsor-slide.active{display:block}
+.sponsor-slide img{width:100%;height:100%;object-fit:cover}
+.sponsor-slide h2{position:absolute;left:7%;top:40%;background:white;padding:20px;color:#222;font-size:28px}
+.sponsor-arrow{position:absolute;top:45%;background:white;border:0;padding:13px;font-size:20px}
+.sleft{left:0}.sright{right:0}
+
+/* SMALL OFFERS */
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.offer-card{height:170px;position:relative;overflow:hidden;border-radius:5px}
+.offer-card img{width:100%;height:100%;object-fit:cover}
+.offer-card h2{position:absolute;bottom:0;background:#0009;color:white;padding:13px;width:100%;font-size:19px}
+
+/* QR */
+.qr{background:white;margin:18px 1%;padding:25px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;text-align:center;gap:20px}
+.qr img{width:130px;height:130px}
+
+/* VIDEO */
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.video-grid video{width:100%;height:250px;background:#222;object-fit:cover}
+
+/* MODALS */
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:2000;justify-content:center;align-items:center;padding:15px}
+.modal-box{background:white;padding:25px;border-radius:8px;width:95%;max-width:650px;max-height:85vh;overflow:auto;position:relative}
+.close{position:absolute;right:15px;top:10px;background:none;border:0;font-size:28px}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding-top:25px}
+.detail img{width:100%;height:250px;object-fit:contain}
+.modal-item{display:flex;align-items:center;gap:15px;padding:12px 0;border-bottom:1px solid #ddd}
+.modal-item img{width:70px;height:70px;object-fit:contain}
+.modal-item button{background:#2874f0;color:white;border:0;padding:8px}
+.toast{position:fixed;bottom:20px;right:20px;background:#172337;color:white;padding:15px;border-radius:5px;display:none;z-index:3000}
+
+/* FOOTER */
+footer{background:#172337;color:white;padding:40px 5%}
+.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px}
+footer h3{color:#aaa;margin-bottom:18px}
+footer a{display:block;margin:12px 0;font-size:14px}
+.copyright{text-align:center;border-top:1px solid #555;margin-top:30px;padding-top:20px}
+
+@media(max-width:900px){
+.product-grid{grid-template-columns:repeat(3,1fr)}
+.search{width:50%}
+}
+@media(max-width:600px){
+.navbar{justify-content:center}
+.search{width:100%;order:3}
+.categories{justify-content:flex-start}
+.cat img{width:45px;height:45px}
+.hero{height:260px}
+.hero-text{max-width:230px;padding:12px}
+.hero-text h1{font-size:21px}
+.product-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+.card img{height:130px}
+.offer-grid{grid-template-columns:1fr}
+.sponsor-slider{height:200px}
+.sponsor-slide h2{font-size:16px}
+.footer-grid{grid-template-columns:repeat(2,1fr)}
+.video-grid{grid-template-columns:1fr}
+.detail{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="logo">Flipkart<span>+</span></div>
+
+<div class="search">
+<input id="searchInput" placeholder="Search for products, brands and more">
+<button onclick="searchProducts()">🔍</button>
+</div>
+
+<button class="login" onclick="openModal('loginModal')">Login</button>
+
+<div class="nav-item" onclick="openWishlist()">♡ Wishlist <span id="wishCount">0</span></div>
+
+<div class="nav-item" onclick="openCart()">🛒 Cart <span id="cartCount">0</span></div>
+</nav>
+
+<!-- CATEGORIES -->
+<div class="categories">
+<div class="cat" onclick="filter('All')"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" alt="All">All</div>
+<div class="cat" onclick="filter('Mobiles')"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=150" alt="Mobiles">Mobiles</div>
+<div class="cat" onclick="filter('Fashion')"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=150" alt="Fashion">Fashion</div>
+<div class="cat" onclick="filter('Beauty')"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=150" alt="Beauty">Beauty</div>
+<div class="cat" onclick="filter('Toys')"><img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=150" alt="Toys">Toys</div>
+<div class="cat" onclick="filter('Gifts')"><img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=150" alt="Gifts">Gifts</div>
+<div class="cat" onclick="filter('Electronics')"><img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=150" alt="Electronics">Electronics</div>
+<div class="cat" onclick="filter('Appliances')"><img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=150" alt="Appliances">Appliances</div>
+<div class="cat" onclick="filter('Home')"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=150" alt="Home">Home</div>
+<div class="cat" onclick="filter('Grocery')"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" alt="Grocery">Grocery</div>
+<div class="cat" onclick="filter('Books')"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=150" alt="Books">Books</div>
+<div class="cat" onclick="filter('Sports')"><img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=150" alt="Sports">Sports</div>
+<div class="cat" onclick="filter('Baby')"><img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=150" alt="Baby">Baby</div>
+</div>
+
+<!-- MAIN CAROUSEL -->
+<div class="hero">
+
+<div class="slide active">
+<img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1600" alt="Mega sale">
+<div class="hero-text">
+<h1>BIG BILLION DAYS</h1>
+<p>Big shopping. Bigger savings. Amazing deals!</p>
+<a class="btn" href="https://www.flipkart.com/search?q=best+deals" target="_blank">SHOP NOW</a>
+</div>
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1600" alt="Mobile offers">
+<div class="hero-text">
+<h1>SMARTPHONE SALE</h1>
+<p>Discover the latest smartphones.</p>
+<a class="btn" href="https://www.flipkart.com/search?q=mobiles" target="_blank">EXPLORE NOW</a>
+</div>
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600" alt="Fashion">
+<div class="hero-text">
+<h1>FASHION FESTIVAL</h1>
+<p>New styles for everyone.</p>
+<a class="btn" href="https://www.flipkart.com/search?q=fashion" target="_blank">SHOP FASHION</a>
+</div>
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1600" alt="Beauty">
+<div class="hero-text">
+<h1>BEAUTY & MAKEUP</h1>
+<p>Explore beauty products and more.</p>
+<a class="btn" href="https://www.flipkart.com/search?q=beauty+products" target="_blank">SHOP BEAUTY</a>
+</div>
+</div>
+
+<button class="arrow prev" onclick="moveSlide(-1)">❮</button>
+<button class="arrow next" onclick="moveSlide(1)">❯</button>
+
+<div class="dots">
+<button class="dot active" onclick="selectSlide(0)"></button>
+<button class="dot" onclick="selectSlide(1)"></button>
+<button class="dot" onclick="selectSlide(2)"></button>
+<button class="dot" onclick="selectSlide(3)"></button>
+</div>
+</div>
+
+<!-- BANK OFFER -->
+<div class="offer-strip">
+<h2>FLIPKART BANK OFFER</h2>
+<h2>UP TO 10% SAVINGS*</h2>
+<p>Extra instant discounts on selected cards</p>
+<a class="btn" href="https://www.flipkart.com/" target="_blank">MORE DETAILS</a>
+</div>
+
+<!-- OFFER BANNER -->
+<div class="ad-banner">
+<h1>MEGA SHOPPING FESTIVAL</h1>
+<p>Fashion • Electronics • Beauty • Toys • Home</p>
+<h2>UP TO 80% OFF*</h2>
+<br>
+<a class="btn" href="https://www.flipkart.com/" target="_blank">EXPLORE OFFERS</a>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section" id="products">
+<div class="heading">
+<h2 id="sectionTitle">🔥 Best Deals For You</h2>
+<button onclick="filter('All')">VIEW ALL</button>
+</div>
+<div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- ADVERTISEMENT -->
+<div class="sponsor">
+<div class="heading"><h2>SPONSORS' SPOTLIGHT</h2><b>AD</b></div>
+<div class="sponsor-slider">
+
+<div class="sponsor-slide active">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1500" alt="Shoes offer">
+<h2>SPORTS SHOES<br>UP TO 50% OFF</h2>
+</div>
+
+<div class="sponsor-slide">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1500" alt="Headphones offer">
+<h2>HEADPHONES<br>EXCITING DEALS</h2>
+</div>
+
+<div class="sponsor-slide">
+<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1500" alt="Watch offer">
+<h2>PREMIUM WATCHES<br>BEST PRICES</h2>
+</div>
+
+<button class="sponsor-arrow sleft" onclick="sponsorMove(-1)">❮</button>
+<button class="sponsor-arrow sright" onclick="sponsorMove(1)">❯</button>
+</div>
+</div>
+
+<!-- EXTRA OFFER CARDS -->
+<section class="section">
+<div class="heading"><h2>Special Offers For You</h2></div>
+<div class="offer-grid">
+<a class="offer-card" href="https://www.flipkart.com/search?q=lipstick" target="_blank">
+<img src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=700" alt="Lipstick offer">
+<h2>Beauty Deals – Up to 60% OFF</h2>
+</a>
+<a class="offer-card" href="https://www.flipkart.com/search?q=toys" target="_blank">
+<img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=700" alt="Toys offer">
+<h2>Toys & Games – Great Deals</h2>
+</a>
+<a class="offer-card" href="https://www.flipkart.com/search?q=gifts" target="_blank">
+<img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=700" alt="Gifts offer">
+<h2>Gift Store – Shop Now</h2>
+</a>
+</div>
+</section>
+
+<!-- QR CODE -->
+<div class="qr">
+<div>
+<h2>SCAN & SHOP ONLINE</h2>
+<p>Scan the QR code to visit Flipkart.</p>
+<br>
+<a class="btn" href="https://www.flipkart.com/" target="_blank">VISIT FLIPKART</a>
+</div>
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwww.flipkart.com/" alt="Flipkart QR code">
+</div>
+
+<!-- VIDEOS -->
+<section class="section">
+<div class="heading"><h2>WATCH & EXPLORE</h2></div>
+<div class="video-grid">
+<video controls poster="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=700">
+<source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+</video>
+<video controls poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+<div>
+<h3>ABOUT</h3>
+<a href="https://www.flipkart.com/" target="_blank">Contact Us</a>
+<a href="https://www.flipkart.com/" target="_blank">About Us</a>
+<a href="https://www.flipkart.com/" target="_blank">Careers</a>
+<a href="https://www.flipkart.com/" target="_blank">Flipkart Stories</a>
+</div>
+<div>
+<h3>HELP</h3>
+<a href="https://www.flipkart.com/" target="_blank">Payments</a>
+<a href="https://www.flipkart.com/" target="_blank">Shipping</a>
+<a href="https://www.flipkart.com/" target="_blank">Cancellation</a>
+<a href="https://www.flipkart.com/" target="_blank">FAQ</a>
+</div>
+<div>
+<h3>POLICY</h3>
+<a href="https://www.flipkart.com/" target="_blank">Return Policy</a>
+<a href="https://www.flipkart.com/" target="_blank">Terms of Use</a>
+<a href="https://www.flipkart.com/" target="_blank">Privacy</a>
+</div>
+<div>
+<h3>SOCIAL</h3>
+<a href="https://www.facebook.com/flipkart" target="_blank">Facebook</a>
+<a href="https://www.instagram.com/flipkart/" target="_blank">Instagram</a>
+<a href="https://www.youtube.com/flipkart" target="_blank">YouTube</a>
+</div>
+</div>
+<div class="copyright">© 2026 Flipkart Style Shopping Website. All Rights Reserved.</div>
+</footer>
+
+<!-- PRODUCT DETAIL -->
+<div class="modal" id="detailModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('detailModal')">×</button>
+<div id="detailContent"></div>
+</div>
+</div>
+
+<!-- CART -->
+<div class="modal" id="cartModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('cartModal')">×</button>
+<h2>🛒 My Cart</h2>
+<div id="cartItems"></div>
+<h3 id="cartTotal"></h3>
+<br>
+<button class="btn" onclick="closeModal('cartModal')">CONTINUE SHOPPING</button>
+</div>
+</div>
+
+<!-- WISHLIST -->
+<div class="modal" id="wishModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('wishModal')">×</button>
+<h2>♡ My Wishlist</h2>
+<div id="wishItems"></div>
+</div>
+</div>
+
+<!-- LOGIN -->
+<div class="modal" id="loginModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('loginModal')">×</button>
+<h2>Welcome to Flipkart</h2>
+<br>
+<input id="loginName" placeholder="Enter your name" style="width:100%;padding:13px;border:1px solid #ccc">
+<br><br>
+<button class="btn" onclick="login()">CONTINUE</button>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* IMAGE FALLBACK */
+function fallbackImage(img){
+img.onerror=null;
+img.src="https://placehold.co/500x400/e8eef7/2874f0?text=Product+Image";
+}
+
+/* PRODUCT LIST */
+const products=[
+
+["iPhone 15","Mobiles",54999,69900,"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500"],
+["Samsung Galaxy","Mobiles",24999,32999,"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"],
+["OnePlus Phone","Mobiles",29999,39999,"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500"],
+["Redmi Smartphone","Mobiles",12999,17999,"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=500"],
+["Realme Smartphone","Mobiles",14999,19999,"https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=500"],
+
+["Wireless Headphones","Electronics",1499,2999,"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"],
+["Smart Watch","Electronics",1999,3999,"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"],
+["Laptop","Electronics",54999,69999,"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500"],
+["DSLR Camera","Electronics",45999,59999,"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500"],
+["Bluetooth Speaker","Electronics",1299,2499,"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500"],
+["LED Television","Electronics",27999,39999,"https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500"],
+["Gaming Keyboard","Electronics",1999,2999,"https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500"],
+
+["Men T-Shirt","Fashion",499,999,"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"],
+["Women Dress","Fashion",1299,2499,"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500"],
+["Saree Collection","Fashion",1499,2999,"https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500"],
+["Running Shoes","Fashion",1499,2999,"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"],
+["Handbag","Fashion",999,1999,"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"],
+["Sunglasses","Fashion",599,1299,"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"],
+["Men Jacket","Fashion",1999,3499,"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500"],
+["Women Shoes","Fashion",999,1999,"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500"],
+
+["Red Lipstick","Beauty",299,599,"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500"],
+["Makeup Kit","Beauty",999,1799,"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500"],
+["Face Wash","Beauty",199,349,"https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=500"],
+["Skin Care Serum","Beauty",499,899,"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"],
+["Perfume","Beauty",799,1499,"https://images.unsplash.com/photo-1541643600914-78b084683601?w=500"],
+["Nail Polish Set","Beauty",249,499,"https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500"],
+["Beauty Brushes","Beauty",399,799,"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500"],
+["Moisturizer","Beauty",299,599,"https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=500"],
+
+["Teddy Bear","Toys",499,899,"https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=500"],
+["Toy Car","Toys",299,599,"https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=500"],
+["Doll Set","Toys",699,1199,"https://images.unsplash.com/photo-1599623560574-39d485900c95?w=500"],
+["Building Blocks","Toys",599,999,"https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=500"],
+["Kids Toy","Toys",399,799,"https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=500"],
+
+["Gift Box","Gifts",499,899,"https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=500"],
+["Flower Bouquet","Gifts",599,999,"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500"],
+["Photo Frame","Gifts",299,599,"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500"],
+["Gift Hamper","Gifts",899,1499,"https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500"],
+["Wall Clock","Gifts",499,899,"https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=500"],
+
+["Air Conditioner","Appliances",32999,45999,"https://images.unsplash.com/photo-1631545806609-8f5b6b2f3e93?w=500"],
+["Refrigerator","Appliances",24999,32999,"https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=500"],
+["Washing Machine","Appliances",18999,25999,"https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500"],
+["Microwave Oven","Appliances",8999,12999,"https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=500"],
+["Mixer Grinder","Appliances",2499,3999,"https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500"],
+
+["Sofa Decor","Home",8999,12999,"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500"],
+["Table Lamp","Home",799,1499,"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500"],
+["Dinner Set","Home",1299,1999,"https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=500"],
+["Bedsheet","Home",699,1299,"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500"],
+
+["Grocery Pack","Grocery",499,699,"https://images.unsplash.com/photo-1542838132-92c53300491e?w=500"],
+["Fresh Fruits","Grocery",199,299,"https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=500"],
+["Books Collection","Books",399,599,"https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=500"],
+["Sports Shoes","Sports",1499,2499,"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=500"],
+["Football","Sports",499,899,"https://images.unsplash.com/photo-1614632537423-1e6c2e7e0e12?w=500"],
+["Baby Clothes","Baby",399,699,"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500"]
+
+].map((p,i)=>({
+id:i,
+name:p[0],
+category:p[1],
+price:p[2],
+old:p[3],
+image:p[4]
+}));
+
+let cart=[];
+let wishlist=[];
+let currentProducts=[...products];
+
+/* PRODUCT DISPLAY */
+function displayProducts(list){
+
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
+
+if(list.length===0){
+grid.innerHTML="<h3>No products found!</h3>";
+return;
+}
+
+list.forEach(p=>{
+
+let discount=Math.round((p.old-p.price)/p.old*100);
+let liked=wishlist.includes(p.id);
+
+grid.innerHTML+=`
+<div class="card">
+
+<img src="${p.image}" alt="${p.name}" onerror="fallbackImage(this)" onclick="details(${p.id})">
+
+<h3 onclick="details(${p.id})">${p.name}</h3>
+<p>${p.category}</p>
+
+<div>
+<span class="price">₹${p.price.toLocaleString("en-IN")}</span>
+<span class="old">₹${p.old.toLocaleString("en-IN")}</span>
+</div>
+
+<div class="discount">${discount}% OFF</div>
+
+<div class="actions">
+<button class="cart-btn" onclick="addCart(${p.id})">ADD TO CART</button>
+<button class="heart ${liked?'active':''}" onclick="toggleWish(${p.id})">${liked?'♥':'♡'}</button>
+</div>
+
+<button class="view-btn" onclick="details(${p.id})">VIEW PRODUCT</button>
+
+</div>
+`;
+
+});
+
+}
+
+displayProducts(products);
+
+/* CATEGORY FILTER */
+function filter(category){
+
+document.getElementById("searchInput").value="";
+
+currentProducts=category==="All"?
+[...products]:
+products.filter(p=>p.category===category);
+
+document.getElementById("sectionTitle").innerText=
+category==="All"?"🔥 All Shopping Products":category+" Products";
+
+displayProducts(currentProducts);
+
+document.getElementById("products").scrollIntoView({behavior:"smooth"});
+
+}
+
+/* SEARCH */
+function searchProducts(){
+
+let value=document.getElementById("searchInput").value.toLowerCase();
+
+currentProducts=products.filter(p=>
+p.name.toLowerCase().includes(value)||
+p.category.toLowerCase().includes(value)
+);
+
+document.getElementById("sectionTitle").innerText="Search Results";
+
+displayProducts(currentProducts);
+
+document.getElementById("products").scrollIntoView({behavior:"smooth"});
+
+}
+
+document.getElementById("searchInput").addEventListener("keydown",e=>{
+if(e.key==="Enter")searchProducts();
+});
+
+/* CART */
+function addCart(id){
+cart.push(products[id]);
+updateCounts();
+toast(products[id].name+" added to cart!");
+}
+
+function removeCart(index){
+cart.splice(index,1);
+updateCounts();
+openCart();
+}
+
+function openCart(){
+
+let area=document.getElementById("cartItems");
+area.innerHTML="";
+let total=0;
+
+if(cart.length===0){
+area.innerHTML="<p>Your cart is empty!</p>";
+}
+
+cart.forEach((p,i)=>{
+total+=p.price;
+
+area.innerHTML+=`
+<div class="modal-item">
+<img src="${p.image}" onerror="fallbackImage(this)" alt="${p.name}">
+<div style="flex:1">
+<b>${p.name}</b>
+<p>₹${p.price.toLocaleString("en-IN")}</p>
+</div>
+<button onclick="removeCart(${i})">REMOVE</button>
+</div>
+`;
+});
+
+document.getElementById("cartTotal").innerText="Total: ₹"+total.toLocaleString("en-IN");
+openModal("cartModal");
+
+}
+
+/* WISHLIST */
+function toggleWish(id){
+
+if(wishlist.includes(id)){
+wishlist=wishlist.filter(x=>x!==id);
+toast("Removed from Wishlist");
+}else{
+wishlist.push(id);
+toast("Added to Wishlist ❤️");
+}
+
+updateCounts();
+displayProducts(currentProducts);
+
+}
+
+function openWishlist(){
+
+let area=document.getElementById("wishItems");
+area.innerHTML="";
+
+if(wishlist.length===0){
+area.innerHTML="<p>Your Wishlist is empty!</p>";
+}
+
+wishlist.forEach(id=>{
+let p=products[id];
+
+area.innerHTML+=`
+<div class="modal-item">
+<img src="${p.image}" onerror="fallbackImage(this)" alt="${p.name}">
+<div style="flex:1">
+<b>${p.name}</b>
+<p>₹${p.price.toLocaleString("en-IN")}</p>
+</div>
+<button onclick="addCart(${id})">ADD TO CART</button>
+</div>
+`;
+});
+
+openModal("wishModal");
+
+}
+
+function updateCounts(){
+document.getElementById("cartCount").innerText=cart.length;
+document.getElementById("wishCount").innerText=wishlist.length;
+}
+
+/* PRODUCT DETAILS */
+function details(id){
+
+let p=products[id];
+let discount=Math.round((p.old-p.price)/p.old*100);
+
+document.getElementById("detailContent").innerHTML=`
+
+<div class="detail">
+
+<img src="${p.image}" onerror="fallbackImage(this)" alt="${p.name}">
+
+<div>
+<h2>${p.name}</h2>
+<br>
+<p>Category: ${p.category}</p>
+<br>
+<h2>₹${p.price.toLocaleString("en-IN")}</h2>
+<br>
+<p><del>₹${p.old.toLocaleString("en-IN")}</del></p>
+<p style="color:green">${discount}% OFF</p>
+<br>
+<p>Special online shopping offer.</p>
+<p>Explore more product details on Flipkart.</p>
+<br>
+<button class="cart-btn" onclick="addCart(${id})">ADD TO CART</button>
+<br><br>
+<button class="btn" onclick="buyNow(${id})">BUY NOW</button>
+</div>
+
+</div>
+`;
+
+openModal("detailModal");
+
+}
+
+/* BUY NOW */
+function buyNow(id){
+
+let p=products[id];
+
+window.open(
+"https://www.flipkart.com/search?q="+encodeURIComponent(p.name),
+"_blank"
+);
+
+}
+
+/* LOGIN */
+function login(){
+
+let name=document.getElementById("loginName").value.trim();
+
+if(!name){
+toast("Please enter your name");
+return;
+}
+
+closeModal("loginModal");
+toast("Welcome "+name+"!");
+
+}
+
+/* MODAL */
+function openModal(id){
+document.getElementById(id).style.display="flex";
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+}
+
+/* TOAST */
+function toast(msg){
+
+let t=document.getElementById("toast");
+t.innerText=msg;
+t.style.display="block";
+
+setTimeout(()=>t.style.display="none",2000);
+
+}
+
+/* MAIN CAROUSEL */
+let slideIndex=0;
+let slides=document.querySelectorAll(".slide");
+let dots=document.querySelectorAll(".dot");
+let timer;
+
+function showSlide(n){
+
+slides.forEach(s=>s.classList.remove("active"));
+dots.forEach(d=>d.classList.remove("active"));
+
+slideIndex=(n+slides.length)%slides.length;
+
+slides[slideIndex].classList.add("active");
+dots[slideIndex].classList.add("active");
+
+}
+
+function moveSlide(n){
+showSlide(slideIndex+n);
+resetTimer();
+}
+
+function selectSlide(n){
+showSlide(n);
+resetTimer();
+}
+
+function startTimer(){
+timer=setInterval(()=>showSlide(slideIndex+1),4000);
+}
+
+function resetTimer(){
+clearInterval(timer);
+startTimer();
+}
+
+startTimer();
+
+/* SPONSOR CAROUSEL */
+let sponsorIndex=0;
+let sponsorSlides=document.querySelectorAll(".sponsor-slide");
+
+function showSponsor(n){
+
+sponsorSlides.forEach(s=>s.classList.remove("active"));
+
+sponsorIndex=(n+sponsorSlides.length)%sponsorSlides.length;
+
+sponsorSlides[sponsorIndex].classList.add("active");
+
+}
+
+function sponsorMove(n){
+showSponsor(sponsorIndex+n);
+}
+
+setInterval(()=>showSponsor(sponsorIndex+1),4500);
+
+</script>
+</body>
+</html>
